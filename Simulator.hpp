@@ -13,7 +13,6 @@
 #include <string>
 #include <mutex>
 
-#include "TaskPool.hpp"
 #include "SimNode.hpp"
 #include "SimTransistor.hpp"
 

@@ -17,7 +17,7 @@ $ ./CSim <netlist_file>
 
 ## Quick Start
 ### Sample netlist file `inv.csim`
-For detailed netlist syntax, please refer to [CSim Netlist Syntax](https://github.com/arkkevin/CSim/wiki/Netlist).
+For detailed netlist syntax, please refer to [CSim Netlist Syntax](https://github.com/fangzhouwang/CSim/wiki/Netlist).
 
 ```spice
 * This is an invertor
@@ -51,11 +51,11 @@ M0002 OUT01 IN001 GND GND NMOS
 ### Understanding the simulation result
 CSim uses different simulation models which are described in the [CSim tech report](http://ceng.usc.edu/techreports/2016/Gupta%20CENG-2016-03.pdf).
 
-A brief discussion about different simulation models can be found in the [Simulation Models](https://github.com/arkkevin/CSim/wiki/Simulation-Models) CSim wiki page.
+A brief discussion about different simulation models can be found in the [Simulation Models](https://github.com/fangzhouwang/CSim/wiki/Simulation-Models) CSim wiki page.
 ## Documentation
-- [CSim Home](https://github.com/arkkevin/CSim/wiki)
-- [CSim Netlist Syntax](https://github.com/arkkevin/CSim/wiki/Netlist)
-- [Simulation Models](https://github.com/arkkevin/CSim/wiki/Simulation-Models)
+- [CSim Home](https://github.com/fangzhouwang/CSim/wiki)
+- [CSim Netlist Syntax](https://github.com/fangzhouwang/CSim/wiki/Netlist)
+- [Simulation Models](https://github.com/fangzhouwang/CSim/wiki/Simulation-Models)
 
 # License
-Licensed under the [Apache License 2.0](https://github.com/arkkevin/CSim/blob/master/LICENSE) License.
+Licensed under the [Apache License 2.0](https://github.com/fangzhouwang/CSim/blob/master/LICENSE) License.

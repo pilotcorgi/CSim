@@ -30,6 +30,8 @@ public:
     SimTransistor(unsigned int u_id, TransistorType type);
     ~SimTransistor();
     
+    std::shared_ptr<SimNode> GetOtherNode(std::shared_ptr<SimNode> node);
+    
     int drain_level_;
     int source_level_;
     int gate_level_;
@@ -37,9 +39,8 @@ public:
     std::shared_ptr<SimNode> drain_;
     std::shared_ptr<SimNode> source_;
     TransistorState state_, new_state_;
-    
-    std::shared_ptr<SimNode> GetOtherNode(std::shared_ptr<SimNode> node);
     TransistorType type_;
+    
 private:
     const unsigned int u_id_;
 };

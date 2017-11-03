@@ -42,17 +42,23 @@ public:
     ~SimNode();
     
     char GetNodeValue();
+    bool isInput();
+    bool isOutput();
+    bool isInternal();
+    bool isVDD();
+    bool isGND();
+
     std::list<std::shared_ptr<SimNode>> *BFSSearch();
+    static std::shared_ptr<SimNode> GetNode(std::string node_name, std::vector<std::shared_ptr<SimNode>> *list);
     
-    static std::shared_ptr<SimNode> GetNode(std::string node_name, std::list<std::shared_ptr<SimNode>> *list);
-    NodeState current_state_, new_state_;
-    const std::string node_name_;
     std::vector<std::weak_ptr<SimTransistor>> fanout_set_;
     std::vector<std::weak_ptr<SimTransistor>> input_set_;
     std::vector<std::weak_ptr<SimTransistor>> storage_set_;
+
+    const std::string node_name_;
     int flags_;
-    
     int node_level_;
+    NodeState current_state_, new_state_;
 };
 
 typedef std::shared_ptr<SimNode> SimNodePtr;

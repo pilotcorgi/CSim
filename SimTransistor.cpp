@@ -15,7 +15,6 @@ u_id_(u_id), type_(type) {
     drain_level_ = -1;
     source_level_ = -1;
     gate_level_ = -1;
-    
 }
 
 SimTransistor::~SimTransistor() {

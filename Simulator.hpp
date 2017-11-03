@@ -15,6 +15,7 @@
 
 #include "SimNode.hpp"
 #include "SimTransistor.hpp"
+#include "SolverFactory.hpp"
 
 class Simulator {
 public:
@@ -26,12 +27,13 @@ public:
     int getCellMaxLevel();
     void ResetSimulator();
     
-//private:
     std::list<SimTransistorPtr> sim_transistor_list_;
-    std::list<SimNodePtr> input_list_;
-    std::list<SimNodePtr> output_list_;
-    std::list<SimNodePtr> supply_list_;
-    std::list<SimNodePtr> node_list_;
+    std::vector<SimNodePtr> input_list_;
+    std::vector<SimNodePtr> output_list_;
+    std::vector<SimNodePtr> supply_list_;
+    std::vector<SimNodePtr> node_list_;
+    
+private:
     std::list<SimNodePtr> changed_list1_, changed_list2_, changed_list3_;
     
     std::string result_bsf_;
@@ -43,19 +45,17 @@ public:
     // supporting one time ratioed case
     int ratioed_test_flag_;
     SimNodePtr ratioed_node_;
+    SolverFactory solver_factory_;
     
     bool GetBin(int num, char *str);
     void SetStimuli(int stimuli);
+    NodeState ComputeNewValue(std::list<SimNodePtr> *node_list);
     bool LevelizeCell();
-    int UpdateValue(std::list<SimNodePtr> *node_list, std::list<SimNodePtr> *changed_list);
-    int UpdateValueWeak(std::list<SimNodePtr> *node_list, std::list<SimNodePtr> *changed_list);
-    int UpdateTransistor(SimNodePtr node, std::list<SimNodePtr> *changed_list);
     void InitStimuli(std::list<SimNodePtr> *changed_list);
     void ResetTransistorList();
     void ResetNodeList();
     void ClearVisitNodeList();
-    void RunSim();
-    void RunSimWeak();
+    void RunSim(int precision_level);
     std::vector<std::string> split(const std::string &s, char delim);
     std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
 };

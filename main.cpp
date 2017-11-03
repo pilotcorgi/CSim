@@ -109,6 +109,7 @@ int main(int argc, const char * argv[]) {
     
     Simulator *simulator = new Simulator();
     //string netlist = "M0001 IN003 IN002 OUT01 VDD PMOS\nM0002 OUT01 IN001 GND GND NMOS\n";
+    //string netlist = ReadNetlistFromFile("5t_bug.csim");
     string netlist = ReadNetlistFromFile(argv[1]);
     
     cout << "--- netlist ---" << endl;
@@ -118,7 +119,6 @@ int main(int argc, const char * argv[]) {
     cout << "--- simulation results ---" << endl;
     cout << "--- precision level 1 ---" << endl;
     PrintTruthTable(simulator->getInputList(), simulator->getOutputList(), simulator->getSimulationResult(1));
-    cout << endl;
     cout << "--- precision level 2 ---" << endl;
     PrintTruthTable(simulator->getInputList(), simulator->getOutputList(), simulator->getSimulationResult(2));
     return 0;

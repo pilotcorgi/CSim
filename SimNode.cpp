@@ -94,7 +94,27 @@ list<SimNodePtr> *SimNode::BFSSearch() {
     return list_temp;
 }
 
-SimNodePtr SimNode::GetNode(string node_name, list<SimNodePtr> *list) {
+bool SimNode::isVDD() {
+    return this->node_name_[0] == 'V';
+}
+
+bool SimNode::isGND() {
+    return this->node_name_[0] == 'G';
+}
+
+bool SimNode::isInput() {
+    return this->node_name_[0] == 'I';
+}
+
+bool SimNode::isOutput() {
+    return this->node_name_[0] == 'O';
+}
+
+bool SimNode::isInternal() {
+    return this->node_name_[0] == 'N';
+}
+
+SimNodePtr SimNode::GetNode(string node_name, vector<SimNodePtr> *list) {
     for (auto iter=list->begin(); iter!=list->end(); iter++) {
         if ((*iter)->node_name_ == node_name) {
             return (*iter);

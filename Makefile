@@ -5,6 +5,7 @@
 # -std=c++11 enables c++11 features
 #
 
+INC= -I ./CircuitRelated -I ./Solvers
 LIB= -std=c++11
 CFLAG= -c -O3
 GCC=g++
@@ -12,20 +13,20 @@ GCC=g++
 all:SimNode.o SimTransistor.o Simulator.o Solver.o AccurateSolver.o WeakPreciseSolver.o SolverFactory.o main.o
 	$(GCC) $(LIB) -o CSim -g SimNode.o SimTransistor.o Simulator.o Solver.o AccurateSolver.o WeakPreciseSolver.o SolverFactory.o main.o
 Simulator.o:
-	$(GCC) $(LIB) $(CFLAG) Simulator.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) Simulator.cpp
 SimTransistor.o:
-	$(GCC) $(LIB) $(CFLAG) SimTransistor.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) ./CircuitRelated/SimTransistor.cpp
 SimNode.o:
-	$(GCC) $(LIB) $(CFLAG) SimNode.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) ./CircuitRelated/SimNode.cpp
 Solver.o:
-	$(GCC) $(LIB) $(CFLAG) Solver.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) ./Solvers/Solver.cpp
 AccurateSolver.o:
-	$(GCC) $(LIB) $(CFLAG) AccurateSolver.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) ./Solvers/AccurateSolver.cpp
 WeakPreciseSolver.o:
-	$(GCC) $(LIB) $(CFLAG) WeakPreciseSolver.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) ./Solvers/WeakPreciseSolver.cpp
 SolverFactory.o:
-	$(GCC) $(LIB) $(CFLAG) SolverFactory.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) ./Solvers/SolverFactory.cpp
 main.o:
-	$(GCC) $(LIB) $(CFLAG) main.cpp
+	$(GCC) $(LIB) $(INC) $(CFLAG) main.cpp
 clean:
 	rm -f *.o CSim

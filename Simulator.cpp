@@ -81,6 +81,10 @@ bool Simulator::LevelizeCell() {
     
     // pass - i
     while (perturb_node_list.empty() == false) {
+        if (perturb_node_list.back()->node_level_ >= sim_transistor_list_.size()+1) {
+            cell_max_level_ = -1;
+            return false;
+        }
         auto node = perturb_node_list.front();
         perturb_node_list.pop_front();
         

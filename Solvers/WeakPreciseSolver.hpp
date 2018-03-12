@@ -16,7 +16,7 @@ public:
     WeakPreciseSolver();
     virtual ~WeakPreciseSolver();
     
-    virtual int UpdateValue(std::list<SimNodePtr> *node_list, std::list<SimNodePtr> *changed_list);
+    virtual int UpdateValue(std::list<SimNodePtr> *node_list, std::set<SimNodePtr> &changed_list);
     // virtual int UpdateTransistor(SimNodePtr node, std::list<SimNodePtr> *changed_list);
 };
 

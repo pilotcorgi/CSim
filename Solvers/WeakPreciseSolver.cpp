@@ -18,7 +18,7 @@ WeakPreciseSolver::WeakPreciseSolver() {
 WeakPreciseSolver::~WeakPreciseSolver() {
 }
 
-int WeakPreciseSolver::UpdateValue(std::list<SimNodePtr> *node_list, std::list<SimNodePtr> *changed_list) {
+int WeakPreciseSolver::UpdateValue(std::list<SimNodePtr> *node_list, std::set<SimNodePtr> &changed_list) {
     int changed_node_cnt = 0;
     
     NodeState new_value = ComputeNewValue(node_list);
@@ -32,7 +32,7 @@ int WeakPreciseSolver::UpdateValue(std::list<SimNodePtr> *node_list, std::list<S
             node_temp->new_state_ = new_value;
             if (node_temp->new_state_ != node_temp->current_state_) {
                 node_temp->current_state_ = node_temp->new_state_;
-                changed_list->push_back(node_temp);
+                changed_list.insert(node_temp);
                 changed_node_cnt++;
             }
         }
@@ -225,7 +225,7 @@ int WeakPreciseSolver::UpdateValue(std::list<SimNodePtr> *node_list, std::list<S
             
             if (node_temp->new_state_ != node_temp->current_state_) {
                 node_temp->current_state_ = node_temp->new_state_;
-                changed_list->push_back(node_temp);
+                changed_list.insert(node_temp);
                 changed_node_cnt++;
             }
         }

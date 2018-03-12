@@ -34,6 +34,7 @@ void Simulator::DoSimulation() {
         return node_1->node_name_ < node_2->node_name_;
     });
 
+//    bool levelizable = LevelizeCell();
     LevelizeCell();
 
     result_bsf_ = "";
@@ -178,17 +179,17 @@ void Simulator::SetStimuli(int stimuli) {
     }
 }
 
-void Simulator::InitStimuli(list<SimNodePtr> *changed_list) {
+void Simulator::InitStimuli(set<SimNodePtr> &changed_list) {
     for (auto temp_node : input_list_) {
         SET_SOURCE(temp_node);
         temp_node->current_state_ = temp_node->new_state_;
-        changed_list->push_back(temp_node);
+        changed_list.insert(temp_node);
     }
     
     for (auto temp_node : supply_list_) {
         SET_SOURCE(temp_node);
         temp_node->current_state_ = temp_node->new_state_;
-        changed_list->push_back(temp_node);
+        changed_list.insert(temp_node);
     }
 }
 
@@ -229,11 +230,10 @@ void Simulator::ClearVisitNodeList() {
 }
 
 void Simulator::RunSim(int precision_level) {
-    list<SimNodePtr> *old_changed_list = &changed_list1_;
-    list<SimNodePtr> *new_changed_list = &changed_list2_;
-    list<SimNodePtr> *high_level_changed_list = &changed_list3_;
-    list<SimNodePtr> *swap_temp;
-    
+    set<SimNodePtr> &old_changed_list = changed_list1_;
+    set<SimNodePtr> &new_changed_list = changed_list2_;
+    set<SimNodePtr> &high_level_changed_list = changed_list3_;
+
     InitStimuli(new_changed_list);
     
     Solver *solver = solver_factory_.getSolver(precision_level);
@@ -241,15 +241,13 @@ void Simulator::RunSim(int precision_level) {
     deadlock_cnt_ = 0;
     
     for (int level=0; level <= cell_max_level_; level++) {
-        while (!new_changed_list->empty()) {
-            old_changed_list->clear();
-            swap_temp = old_changed_list;
-            old_changed_list = new_changed_list;
-            new_changed_list = swap_temp;
-            
-            for (auto node_temp : *old_changed_list) {
+        while (!new_changed_list.empty()) {
+            old_changed_list.clear();
+            swap(old_changed_list, new_changed_list);
+
+            for (auto node_temp : old_changed_list) {
                 if (node_temp->node_level_ > level) {
-                    high_level_changed_list->push_back(node_temp);
+                    high_level_changed_list.insert(node_temp);
                     continue;
                 }
                 ClearVisitNodeList();
@@ -264,13 +262,14 @@ void Simulator::RunSim(int precision_level) {
                 m_cout_.unlock();
             }
         }
-        new_changed_list->splice(new_changed_list->end(), *high_level_changed_list);
+        new_changed_list.insert(high_level_changed_list.begin(), high_level_changed_list.end());
+        high_level_changed_list.clear();
     }
     
     delete solver;
     
-    old_changed_list->clear();
-    new_changed_list->clear();
+    old_changed_list.clear();
+    new_changed_list.clear();
 }
 
 string Simulator::getSimulationResult(int precision_level) {

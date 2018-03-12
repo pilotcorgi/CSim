@@ -10,6 +10,7 @@
 #define Simulator_hpp
 
 #include <list>
+#include <set>
 #include <string>
 #include <mutex>
 
@@ -34,7 +35,7 @@ public:
     std::vector<SimNodePtr> node_list_;
     
 private:
-    std::list<SimNodePtr> changed_list1_, changed_list2_, changed_list3_;
+    std::set<SimNodePtr> changed_list1_, changed_list2_, changed_list3_;
     
     std::string result_bsf_;
     std::string result_bsf_weak_;
@@ -51,7 +52,7 @@ private:
     void SetStimuli(int stimuli);
     NodeState ComputeNewValue(std::list<SimNodePtr> *node_list);
     bool LevelizeCell();
-    void InitStimuli(std::list<SimNodePtr> *changed_list);
+    void InitStimuli(std::set<SimNodePtr> &changed_list);
     void ResetTransistorList();
     void ResetNodeList();
     void ClearVisitNodeList();

@@ -40,6 +40,8 @@ NodeState Solver::ComputeNewValue(list<SimNodePtr> *node_list) {
             value |= 0x010000;
         } else if (node_temp->current_state_ == WEAK0) {
             value |= 0x100000;
+        } else if (node_temp->current_state_ == RATIOED_IMP) {
+            value |= 0x1000000;
         } else if (node_temp->current_state_ == RATIOED) {
             value |= 0x001000;
         } else {
@@ -58,6 +60,8 @@ NodeState Solver::ComputeNewValue(list<SimNodePtr> *node_list) {
         new_value = WEAK0;
     } else if (value == 0x000000) {
         new_value = UNINITIALIZED;
+    } else if (value == 0x1000000) {
+        new_value = RATIOED_IMP;
     } else {
         new_value = RATIOED;
     }
@@ -69,7 +73,7 @@ NodeState Solver::ComputeNewValue(list<SimNodePtr> *node_list) {
     return new_value;
 }
 
-int Solver::UpdateTransistor(SimNodePtr node, list<SimNodePtr> *changed_list) {
+int Solver::UpdateTransistor(SimNodePtr node, set<SimNodePtr> &changed_list) {
     int update_cnt = 0;
     SimTransistorPtr temp_transistor;
     bool is_changed = false;
@@ -84,11 +88,11 @@ int Solver::UpdateTransistor(SimNodePtr node, list<SimNodePtr> *changed_list) {
             if (temp_transistor->new_state_ != temp_transistor->state_) {
                 temp_transistor->state_ = temp_transistor->new_state_;
                 if (!IS_SOURCE(temp_transistor->drain_)) {
-                    changed_list->push_back(temp_transistor->drain_);
+                    changed_list.insert(temp_transistor->drain_);
                     update_cnt++;
                 }
                 if (!IS_SOURCE(temp_transistor->source_)) {
-                    changed_list->push_back(temp_transistor->source_);
+                    changed_list.insert(temp_transistor->source_);
                     update_cnt++;
                 }
             }
@@ -102,32 +106,32 @@ int Solver::UpdateTransistor(SimNodePtr node, list<SimNodePtr> *changed_list) {
             if (temp_transistor->new_state_ != temp_transistor->state_) {
                 temp_transistor->state_ = temp_transistor->new_state_;
                 if (!IS_SOURCE(temp_transistor->drain_)) {
-                    changed_list->push_back(temp_transistor->drain_);
+                    changed_list.insert(temp_transistor->drain_);
                     update_cnt++;
                 }
                 if (!IS_SOURCE(temp_transistor->source_)) {
-                    changed_list->push_back(temp_transistor->source_);
+                    changed_list.insert(temp_transistor->source_);
                     update_cnt++;
                 }
             }
         }
         
-        if (RATIOED == node->current_state_) {
+        if (RATIOED == node->current_state_ || RATIOED_IMP == node->current_state_) {
             temp_transistor->new_state_ = RATIOED_STATE;
             if (temp_transistor->new_state_ != temp_transistor->state_) {
                 temp_transistor->state_ = temp_transistor->new_state_;
                 
                 if (!IS_SOURCE(temp_transistor->drain_)) {
-                    if (temp_transistor->drain_->current_state_ != RATIOED) {
-                        temp_transistor->drain_->current_state_ = RATIOED;
-                        changed_list->push_back(temp_transistor->drain_);
+                    if (temp_transistor->drain_->current_state_ != RATIOED_IMP) {
+                        temp_transistor->drain_->current_state_ = RATIOED_IMP;
+                        changed_list.insert(temp_transistor->drain_);
                     }
                 }
                 
                 if (!IS_SOURCE(temp_transistor->source_)) {
-                    if (temp_transistor->source_->current_state_ != RATIOED) {
-                        temp_transistor->source_->current_state_ = RATIOED;
-                        changed_list->push_back(temp_transistor->source_);
+                    if (temp_transistor->source_->current_state_ != RATIOED_IMP) {
+                        temp_transistor->source_->current_state_ = RATIOED_IMP;
+                        changed_list.insert(temp_transistor->source_);
                     }
                 }
             }
@@ -142,14 +146,14 @@ int Solver::UpdateTransistor(SimNodePtr node, list<SimNodePtr> *changed_list) {
                 if (!IS_SOURCE(temp_transistor->drain_)) {
                     if (temp_transistor->drain_->current_state_ != INVALID) {
                         temp_transistor->drain_->current_state_ = INVALID;
-                        changed_list->push_back(temp_transistor->drain_);
+                        changed_list.insert(temp_transistor->drain_);
                     }
                 }
                 
                 if (!IS_SOURCE(temp_transistor->source_)) {
                     if (temp_transistor->source_->current_state_ != INVALID) {
                         temp_transistor->source_->current_state_ = INVALID;
-                        changed_list->push_back(temp_transistor->source_);
+                        changed_list.insert(temp_transistor->source_);
                     }
                 }
             }
@@ -163,11 +167,11 @@ int Solver::UpdateTransistor(SimNodePtr node, list<SimNodePtr> *changed_list) {
             if (temp_transistor->new_state_ != temp_transistor->state_) {
                 temp_transistor->state_ = temp_transistor->new_state_;
                 if (!IS_SOURCE(temp_transistor->drain_)) {
-                    changed_list->push_back(temp_transistor->drain_);
+                    changed_list.insert(temp_transistor->drain_);
                     update_cnt++;
                 }
                 if (!IS_SOURCE(temp_transistor->source_)) {
-                    changed_list->push_back(temp_transistor->source_);
+                    changed_list.insert(temp_transistor->source_);
                     update_cnt++;
                 }
             }

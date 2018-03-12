@@ -10,6 +10,7 @@
 #define Solver_hpp
 
 #include <list>
+#include <set>
 #include "SimNode.hpp"
 
 class Solver {
@@ -17,8 +18,8 @@ public:
     Solver();
     virtual ~Solver();
     
-    virtual int UpdateValue(std::list<SimNodePtr> *node_list, std::list<SimNodePtr> *changed_list) = 0;
-    int UpdateTransistor(SimNodePtr node, std::list<SimNodePtr> *changed_list);
+    virtual int UpdateValue(std::list<SimNodePtr> *node_list, std::set<SimNodePtr> &changed_list) = 0;
+    int UpdateTransistor(SimNodePtr node, std::set<SimNodePtr> &changed_list);
     NodeState ComputeNewValue(std::list<SimNodePtr> *node_list);
 };
 

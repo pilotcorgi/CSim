@@ -33,7 +33,7 @@
 
 typedef enum tagNodeState {
     UNINITIALIZED = 0,
-    INVALID, STRONG1, WEAK1, STRONG0, WEAK0, RATIOED, DOUBLE_WEAK1, DOUBLE_WEAK0
+    INVALID, STRONG1, WEAK1, STRONG0, WEAK0, RATIOED, RATIOED_IMP, DOUBLE_WEAK1, DOUBLE_WEAK0
 } NodeState;
 
 class SimNode : public std::enable_shared_from_this<SimNode> {

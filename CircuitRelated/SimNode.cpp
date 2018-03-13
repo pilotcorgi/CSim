@@ -33,6 +33,9 @@ char SimNode::GetNodeValue() {
     else if (current_state_ == STRONG0) {
         value_temp = '0';
     }
+    else if (current_state_ == RATIOED_IMP) {
+        value_temp = 'r';
+    }
     else if (current_state_ == RATIOED) {
         value_temp = 'R';
     }

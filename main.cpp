@@ -11,6 +11,7 @@
 #include <algorithm>
 
 #include "Simulator.hpp"
+#include "ArkCLP.hpp"
 
 using namespace std;
 
@@ -102,21 +103,21 @@ void PrintTruthTable(list<string> inputs, list<string> outputs, string results) 
 }
 
 int main(int argc, const char * argv[]) {
-    if (argc != 2 && argc != 3) {
-        cerr << "Usage: CSim <netlist_file_name>" << endl;
-        cerr << "\tCSim -s <netlist_string>" << endl;
+    if (argc < 2) {
+        cerr << "Usage: CSim -file=<netlist_file_name>" << endl;
+        cerr << "\tCSim -netlist=<netlist_string>" << endl;
         exit(1);
     }
+    ArkCLP clp(argc, argv);
     
     Simulator *simulator = new Simulator();
     //string netlist = "M0001 IN003 IN002 OUT01 VDD PMOS\nM0002 OUT01 IN001 GND GND NMOS\n";
     //string netlist = ReadNetlistFromFile("5t_bug.csim");
-    M0001 VDD VDD OUT01 GND NMOS M0002 OUT01 VDD IN001 GND NMOS
-    M0001 VDD VDD N0001 GND NMOS M0002 OUT01 IN001 N0001 GND NMOS
     string netlist = "";
     
-    if (argc == 2) {
-        netlist = ReadNetlistFromFile(argv[1]);
+    if (clp["file"] != "") {
+        netlist = ReadNetlistFromFile(clp["file"]);
+        netlist = "M0001 GND IN001 N0001 GND NMOS\nM0002 VDD GND N0001 VDD PMOS\nM0003 GND N0001 OUT01 GND NMOS\nM0004 VDD N0001 OUT01 VDD PMOS\n";
         cout << "--- netlist ---" << endl;
         cout << netlist << endl;
         simulator->ParseNetlist(netlist);
@@ -126,8 +127,9 @@ int main(int argc, const char * argv[]) {
         PrintTruthTable(simulator->getInputList(), simulator->getOutputList(), simulator->getSimulationResult(1));
         cout << "--- precision level 2 ---" << endl;
         PrintTruthTable(simulator->getInputList(), simulator->getOutputList(), simulator->getSimulationResult(2));
-    } else {
-        netlist = string(argv[2]);
+    } else if (clp["netlist"] != "") {
+        netlist = clp[1];
+        replace(netlist.begin(), netlist.end(), 'n', '\n');
         //netlist ="M0001 GND IN001 N0001 GND NMOS\nM0002 VDD IN001 N0001 VDD PMOS\nM0003 VDD N0001 OUT01 VDD PMOS\nM0004 IN002 IN001 OUT01 VDD PMOS\n";
         simulator->ParseNetlist(netlist);
         simulator->DoSimulation();

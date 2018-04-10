@@ -5,13 +5,13 @@
 # -std=c++11 enables c++11 features
 #
 
-INC= -I ./CircuitRelated -I ./Solvers
+INC= -I ./CircuitRelated -I ./Solvers -I ./ArkLibCpp/src/
 LIB= -std=c++11
 CFLAG= -c -O3
 GCC=g++
 
-all:SimNode.o SimTransistor.o Simulator.o Solver.o AccurateSolver.o WeakPreciseSolver.o SolverFactory.o main.o
-	$(GCC) $(LIB) -o CSim -g SimNode.o SimTransistor.o Simulator.o Solver.o AccurateSolver.o WeakPreciseSolver.o SolverFactory.o main.o
+all:SimNode.o SimTransistor.o Simulator.o Solver.o AccurateSolver.o WeakPreciseSolver.o SolverFactory.o main.o ArkCLP.o
+	$(GCC) $(LIB) -o CSim -g SimNode.o SimTransistor.o Simulator.o Solver.o AccurateSolver.o WeakPreciseSolver.o SolverFactory.o main.o ArkCLP.o
 Simulator.o:
 	$(GCC) $(LIB) $(INC) $(CFLAG) Simulator.cpp
 SimTransistor.o:
@@ -26,6 +26,8 @@ WeakPreciseSolver.o:
 	$(GCC) $(LIB) $(INC) $(CFLAG) ./Solvers/WeakPreciseSolver.cpp
 SolverFactory.o:
 	$(GCC) $(LIB) $(INC) $(CFLAG) ./Solvers/SolverFactory.cpp
+ArkCLP.o:
+	$(GCC) $(LIB) $(INC) $(CFLAG) ./ArkLibCpp/src/ArkCLP.cpp
 main.o:
 	$(GCC) $(LIB) $(INC) $(CFLAG) main.cpp
 clean:

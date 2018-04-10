@@ -117,7 +117,6 @@ int main(int argc, const char * argv[]) {
     
     if (clp["file"] != "") {
         netlist = ReadNetlistFromFile(clp["file"]);
-        netlist = "M0001 GND IN001 N0001 GND NMOS\nM0002 VDD GND N0001 VDD PMOS\nM0003 GND N0001 OUT01 GND NMOS\nM0004 VDD N0001 OUT01 VDD PMOS\n";
         cout << "--- netlist ---" << endl;
         cout << netlist << endl;
         simulator->ParseNetlist(netlist);
@@ -128,7 +127,7 @@ int main(int argc, const char * argv[]) {
         cout << "--- precision level 2 ---" << endl;
         PrintTruthTable(simulator->getInputList(), simulator->getOutputList(), simulator->getSimulationResult(2));
     } else if (clp["netlist"] != "") {
-        netlist = clp[1];
+        netlist = clp["netlist"];
         replace(netlist.begin(), netlist.end(), 'n', '\n');
         //netlist ="M0001 GND IN001 N0001 GND NMOS\nM0002 VDD IN001 N0001 VDD PMOS\nM0003 VDD N0001 OUT01 VDD PMOS\nM0004 IN002 IN001 OUT01 VDD PMOS\n";
         simulator->ParseNetlist(netlist);

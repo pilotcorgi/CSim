@@ -12,10 +12,12 @@
 #include <memory>
 
 #define CMOS_TRANSISTOR_PORT_CNT    3
+#define MR_TRANSISTOR_PORT_CNT      2
 
 typedef enum tagTransistorType {
     pmos = 0,
-    nmos
+    nmos,
+    mr
 } TransistorType;
 
 typedef enum tagTransistorState {
